@@ -7,10 +7,6 @@
 	Version: 0.1
 	Author: Matthew Boynes
 	Author URI: http://www.alleyinteractive.com/
-
-	@todo Add a debug bar extension which reads a transient; the transient
-		  would be updated whenever rewrite rules are flushed. The debug
-		  bar extension would show pass/fail status.
 */
 /*  This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
