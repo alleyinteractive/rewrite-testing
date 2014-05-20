@@ -4,7 +4,7 @@ Donate link: url
 Tags: permalinks, rewrite rules, tests, testing
 Requires at least: 3.9
 Tested up to: 3.9
-Stable tag: 0.1
+Stable tag: 0.1.1
 
 Unit test your rewrite rules from the WordPress Admin.
 
@@ -47,6 +47,7 @@ structure.
   updated whenever rewrite rules are flushed. The debug bar extension would
   show pass/fail status and link directly to the settings page.
 * Add tests for other permalink structures?
+* Add a way to run this as part of phpunit
 
 
 == Installation ==
@@ -64,6 +65,9 @@ Name" permalink structure. The purpose of this plugin is not to test core
 rewrites; these are just to serve as a demonstration.
 
 == Changelog ==
+
+= 0.1.1 =
+Cosmetic updates
 
 = 0.1 =
 Initial release. Enjoy!

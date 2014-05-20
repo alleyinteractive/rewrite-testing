@@ -4,7 +4,7 @@
 	Plugin Name: Rewrite Rule Testing
 	Plugin URI: https://github.com/alleyinteractive/rewrite-testing
 	Description: Unit test your rewrite rules
-	Version: 0.1
+	Version: 0.1.1
 	Author: Matthew Boynes
 	Author URI: http://www.alleyinteractive.com/
 */
@@ -107,7 +107,7 @@ class Rewrite_Testing {
 			}
 		</style>
 		<div class="wrap">
-			<h2><?php esc_html_e( 'Flush & Test Rewrite Rules', 'rewrite-testing' ); ?></h2>
+			<h2><?php esc_html_e( 'Test & Flush Rewrite Rules', 'rewrite-testing' ); ?></h2>
 
 			<p><a title="<?php esc_attr_e( 'Flush your rewrite rules to regenerate them', 'rewrite-testing' ); ?>" class="button-secondary" href="<?php echo esc_url( $flush_url ); ?>"><?php esc_html_e( 'Flush Rewrite Rules', 'rewrite-testing' ); ?></a></p>
 
