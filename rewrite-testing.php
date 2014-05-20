@@ -140,7 +140,7 @@ class Rewrite_Testing {
 				<h3>Test Results</h3>
 				<?php if ( $this->errors ) : ?>
 					<div class="message error">
-						<p><?php echo _n( '1 test failed!', '%d tests failed!', $this->errors, 'rewrite-testing' ); ?></p>
+						<p><?php printf( _n( '1 test failed!', '%d tests failed!', $this->errors, 'rewrite-testing' ), $this->errors ); ?></p>
 					</div>
 				<?php else : ?>
 					<div class="message updated">
