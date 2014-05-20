@@ -64,6 +64,11 @@ Out-of-the-box, this plugin is setup to test core rewrites for the "Day and
 Name" permalink structure. The purpose of this plugin is not to test core
 rewrites; these are just to serve as a demonstration.
 
+== Screenshots ==
+
+1. Sample output of passing rules
+2. Sample output of failing rules
+
 == Changelog ==
 
 = 0.1.1 =
