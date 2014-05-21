@@ -29,7 +29,11 @@ class Rewrite_Testing {
 
 	private static $instance;
 
-	private $errors = 0;
+	protected $transient_key = 'rewrite-testing-results';
+
+	protected $errors = 0;
+
+	protected $summary = array();
 
 	private function __construct() {
 		/* Don't do anything, needs to be initialized via instance() method */
@@ -55,6 +59,13 @@ class Rewrite_Testing {
 	 */
 	public function setup() {
 		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
+
+		add_filter( 'debug_bar_panels', array( $this, 'debug_bar_panel' ) );
+		add_filter( 'debug_bar_classes', array( $this, 'debug_bar_classes' ) );
+		add_filter( 'debug_bar_statuses', array( $this, 'debug_bar_statuses' ) );
+
+		add_action( 'generate_rewrite_rules', array( $this, 'clear_cache' ) );
+
 		if ( isset( $_GET['page'], $_GET['action'] ) && 'rewrite-testing' == $_GET['page'] && 'flush-rules' == $_GET['action'] )
 			add_action( 'admin_init', array( $this, 'flush_rules' ) );
 		elseif ( isset( $_GET['page'], $_GET['message'] ) && 'rewrite-testing' == $_GET['page'] && 'flush-success' == $_GET['message'] )
@@ -98,8 +109,14 @@ class Rewrite_Testing {
 		);
 		?>
 		<style type="text/css">
+			#rt_test_results tr:nth-child(even) {
+				background-color: #f9f9f9;
+			}
 			#rt_test_results tr.error {
 				background-color: #f7a8a9;
+			}
+			#rt_test_results tr.error:nth-child(even) {
+				background-color: #f2a5a6;
 			}
 			#rt_test_results tr.error td {
 				border-top-color: #FECFD0;
@@ -137,7 +154,7 @@ class Rewrite_Testing {
 					</table>
 				<?php endif; ?>
 			<?php else : ?>
-				<h3>Test Results</h3>
+				<h3><?php esc_html_e( 'Test Results', 'rewrite-testing' ); ?></h3>
 				<?php if ( $this->errors ) : ?>
 					<div class="message error">
 						<p><?php printf( _n( '1 test failed!', '%d tests failed!', $this->errors, 'rewrite-testing' ), $this->errors ); ?></p>
@@ -149,35 +166,66 @@ class Rewrite_Testing {
 				<?php endif ?>
 
 				<table class="wp-list-table widefat">
-					<thead>
-						<tr>
-							<th scope="col" class="manage-column"><?php esc_html_e( 'Group', 'rewrite-testing' ); ?></th>
-							<th scope="col" class="manage-column"><?php esc_html_e( 'Status', 'rewrite-testing' ); ?></th>
-							<th scope="col" class="manage-column"><?php esc_html_e( 'Test Path', 'rewrite-testing' ); ?></th>
-							<th scope="col" class="manage-column"><?php esc_html_e( 'Expected Results', 'rewrite-testing' ); ?></th>
-							<th scope="col" class="manage-column"><?php esc_html_e( 'Actual Results', 'rewrite-testing' ); ?></th>
-							<th scope="col" class="manage-column"><?php esc_html_e( 'Rewrite Rule Matched', 'rewrite-testing' ); ?></th>
-						</tr>
-					</thead>
+					<?php $this->results_table_head() ?>
 					<tbody id="rt_test_results">
-						<?php foreach ( $results as $row ) : ?>
-							<tr class="<?php echo esc_attr( $row['status'] ) ?>">
-								<td><?php echo esc_html( $row['group'] ) ?></td>
-								<?php if ( 'error' == $row['status'] ) : ?>
-									<td><?php esc_html_e( 'Failed!', 'rewrite-testing' ) ?></td>
-								<?php else : ?>
-									<td><?php esc_html_e( 'Passed', 'rewrite-testing' ) ?></td>
-								<?php endif ?>
-								<td><?php echo esc_html( $row['path'] ) ?></td>
-								<td><?php echo esc_html( $row['test'] ) ?></td>
-								<td><?php echo esc_html( $row['target'] ) ?></td>
-								<td><?php echo esc_html( $row['rule'] ) ?></td>
-							</tr>
-						<?php endforeach; ?>
+						<?php array_walk( $results, array( $this, 'results_row' ) ) ?>
 					</tbody>
 				</table>
 			<?php endif; ?>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Output the head for the rewrite test results table.
+	 *
+	 * @return void
+	 */
+	public function results_table_head() {
+		?>
+		<thead>
+			<tr>
+				<th scope="col" class="manage-column"><?php esc_html_e( 'Group', 'rewrite-testing' ); ?></th>
+				<th scope="col" class="manage-column"><?php esc_html_e( 'Status', 'rewrite-testing' ); ?></th>
+				<th scope="col" class="manage-column"><?php esc_html_e( 'Test Path', 'rewrite-testing' ); ?></th>
+				<th scope="col" class="manage-column"><?php esc_html_e( 'Results', 'rewrite-testing' ); ?></th>
+			</tr>
+		</thead>
+		<?php
+	}
+
+	/**
+	 * Output a row of rewrite test results forthe results table.
+	 *
+	 * @param  array $row {
+	 * 		Row of data for the results table.
+	 * 		@type type $key Description. Default <value>. Accepts <value>, <value>.
+	 * 		@type  string $status The status string.
+	 * 		@type  string $group The rewrite permastruct.
+	 * 		@type  string $path The test path.
+	 * 		@type  string $test The test -- what we expect to see.
+	 * 		@type  string $target The target matched -- what we did see.
+	 * 		@type  string $rule The rule that actually matched.
+	 * }
+	 * @return void
+	 */
+	public function results_row( $row ) {
+		?>
+		<tr class="<?php echo esc_attr( $row['status'] ) ?>">
+			<td><?php echo esc_html( $row['group'] ) ?></td>
+			<?php if ( 'error' == $row['status'] ) : ?>
+				<td><?php esc_html_e( 'Failed!', 'rewrite-testing' ) ?></td>
+			<?php else : ?>
+				<td><?php esc_html_e( 'Passed', 'rewrite-testing' ) ?></td>
+			<?php endif ?>
+			<td><?php echo esc_html( $row['path'] ) ?></td>
+			<td>
+				<strong><?php esc_html_e( 'Expected:', 'rewrite-testing' ); ?></strong> <?php echo esc_html( $row['test'] ) ?><br />
+				<strong><?php esc_html_e( 'Received:', 'rewrite-testing' ); ?></strong> <?php echo esc_html( $row['target'] ) ?><br />
+				<strong><?php esc_html_e( 'Matched:', 'rewrite-testing' ); ?></strong> <?php echo esc_html( $row['rule'] ) ?>
+				<?php do_action( 'rewrite_testing_unit_results', $row ) ?>
+			</td>
+		</tr>
 		<?php
 	}
 
@@ -343,6 +391,7 @@ class Rewrite_Testing {
 	 * @return array|object If successful, returns an array of the results. Otherwise, returns a WP_Error object
 	 */
 	function test() {
+		$this->summary = array();
 		$tests = $this->test_cases();
 		$rewrite_rules_array = $this->get_rules();
 		if ( is_wp_error( $rewrite_rules_array ) ) {
@@ -381,13 +430,24 @@ class Rewrite_Testing {
 				$result['rule'] = $rule;
 				$result['target'] = $target;
 
-				if ( $match !== $target ) {
+				$unit_result = $match === $target;
+				if ( ! apply_filters( 'rewrite_testing_unit_test', $unit_result, $match, $target, $rule ) ) {
 					$this->errors++;
 					$result['status'] = 'error';
+					$this->summary['details'][] = $result;
 				}
 				$results[] = $result;
 			}
 		}
+
+		if ( $this->errors ) {
+			$this->summary['status'] = __( 'Failing', 'rewrite-testing' );
+			$this->summary['error_count'] = $this->errors;
+		} else {
+			$this->summary['status'] = __( 'Passing', 'rewrite-testing' );
+		}
+
+		set_transient( $this->transient_key, $this->summary );
 
 		return $results;
 	}
@@ -470,6 +530,65 @@ class Rewrite_Testing {
 
 		// Return our array of rewrite rules to be used
 		return $rewrite_rules_array;
+	}
+
+	/**
+	 * Get the summary of the tests, preferably from the transient.
+	 *
+	 * @return array The test results summary.
+	 */
+	public function get_summary() {
+		if ( false === ( $this->summary = get_transient( $this->transient_key ) ) ) {
+			$this->test();
+		}
+		return $this->summary;
+	}
+
+	/**
+	 * Clear the summary cache.
+	 *
+	 * @return void
+	 */
+	public function clear_cache() {
+		delete_transient( $this->transient_key );
+	}
+
+	/**
+	 * Register the debug bar component to this plugin.
+	 *
+	 * @param  array $panels Debug Bar panels.
+	 * @return array
+	 */
+	public function debug_bar_panel( $panels ) {
+		require_once( dirname( __FILE__ ) . '/class-debug-bar-rewrite-testing-panel.php' );
+		$panels[] = new Debug_Bar_Rewrite_Testing_Panel();
+		return $panels;
+	}
+
+	/**
+	 * Set the classes for the debug bar. We want to make it a warning if out tests are failing.
+	 *
+	 * @param  array $classes
+	 * @return array
+	 */
+	public function debug_bar_classes( $classes ) {
+		$this->get_summary();
+		if ( ! empty( $this->summary['error_count'] ) ) {
+			$classes[] = 'debug-bar-php-warning-summary';
+		}
+		return $classes;
+	}
+
+	/**
+	 * Add our test status to the debug bar statuses.
+	 *
+	 * @param  array $statuses
+	 * @return array
+	 */
+	public function debug_bar_statuses( $statuses ) {
+		$this->get_summary();
+		$statuses[] = array( 'rewrite-testing', __( 'Rewrite Tests', 'rewrite-testing' ), $this->summary['status'] );
+		return $statuses;
 	}
 
 }
