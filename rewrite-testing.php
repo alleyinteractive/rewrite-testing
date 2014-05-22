@@ -401,7 +401,7 @@ class Rewrite_Testing {
 	 * @return array|object If successful, returns an array of the results. Otherwise, returns a WP_Error object
 	 */
 	function test() {
-		require_once( dirname( __FILE__ ) . '/class-rewrite-testing-tests.php' );
+		require_once( dirname( __FILE__ ) . '/php/class-rewrite-testing-tests.php' );
 
 		$this->summary = array();
 		$tests = $this->test_cases();
@@ -504,7 +504,7 @@ class Rewrite_Testing {
 	 * @return array
 	 */
 	public function debug_bar_panel( $panels ) {
-		require_once( dirname( __FILE__ ) . '/class-debug-bar-rewrite-testing-panel.php' );
+		require_once( dirname( __FILE__ ) . '/php/class-debug-bar-rewrite-testing-panel.php' );
 		$panels[] = new Debug_Bar_Rewrite_Testing_Panel();
 		return $panels;
 	}
