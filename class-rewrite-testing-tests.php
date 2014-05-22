@@ -57,7 +57,10 @@ class Rewrite_Testing_Tests {
 	}
 
 	public function extended_test( $request ) {
-		global $wp_rewrite;
+		global $wp_rewrite, $wp;
+
+		$query_vars = array();
+		$post_type_query_vars = array();
 
 		if ( false === $this->extended_rewrite_rules ) {
 			// Fetch the rewrite rules.
@@ -124,7 +127,7 @@ class Rewrite_Testing_Tests {
 		 *
 		 * @param array $public_query_vars The array of whitelisted query variables.
 		 */
-		$public_query_vars = apply_filters( 'query_vars', array( 'm', 'p', 'posts', 'w', 'cat', 'withcomments', 'withoutcomments', 's', 'search', 'exact', 'sentence', 'calendar', 'page', 'paged', 'more', 'tb', 'pb', 'author', 'order', 'orderby', 'year', 'monthnum', 'day', 'hour', 'minute', 'second', 'name', 'category_name', 'tag', 'feed', 'author_name', 'static', 'pagename', 'page_id', 'error', 'comments_popup', 'attachment', 'attachment_id', 'subpost', 'subpost_id', 'preview', 'robots', 'taxonomy', 'term', 'cpage', 'post_type' ) );
+		$public_query_vars = apply_filters( 'query_vars', $wp->public_query_vars );
 
 		foreach ( get_post_types( array(), 'objects' ) as $post_type => $t )
 			if ( $t->query_var )
@@ -170,7 +173,7 @@ class Rewrite_Testing_Tests {
 			}
 		}
 
-		foreach ( array( 'offset', 'posts_per_page', 'posts_per_archive_page', 'showposts', 'nopaging', 'post_type', 'post_status', 'category__in', 'category__not_in', 'category__and', 'tag__in', 'tag__not_in', 'tag__and', 'tag_slug__in', 'tag_slug__and', 'tag_id', 'post_mime_type', 'perm', 'comments_per_page', 'post__in', 'post__not_in', 'post_parent', 'post_parent__in', 'post_parent__not_in' ) as $var) {
+		foreach ( $wp->private_query_vars as $var) {
 			if ( isset( $this_extra_query_vars[ $var ] ) )
 				$query_vars[ $var ] = $this_extra_query_vars[ $var ];
 		}
