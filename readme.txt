@@ -43,10 +43,6 @@ structure.
 
 == Todo ==
 
-* Add a debug bar extension which reads a transient; the transient would be
-  updated whenever rewrite rules are flushed. The debug bar extension would
-  show pass/fail status and link directly to the settings page.
-* Add tests for other permalink structures?
 * Add a way to run this as part of phpunit
 
 
@@ -71,8 +67,16 @@ rewrites; these are just to serve as a demonstration.
 
 == Changelog ==
 
+= 0.2 =
+
+* Adds debug bar panel/status for CI(ish)
+* Adds "enhanced" query-based rewrite tests
+* Adds filters for providing custom test routines.
+
 = 0.1.1 =
-Cosmetic updates
+
+* Cosmetic updates
 
 = 0.1 =
-Initial release. Enjoy!
+
+* Initial release. Enjoy!
