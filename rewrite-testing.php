@@ -406,6 +406,7 @@ class Rewrite_Testing {
 		$this->summary = array();
 		$tests = $this->test_cases();
 		$results = array();
+		$this->errors = 0;
 
 		foreach ( $tests as $group => $test_cases ) {
 			foreach ( $test_cases as $path => $test ) {
