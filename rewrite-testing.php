@@ -264,6 +264,9 @@ class Rewrite_Testing {
 	 * @return array
 	 */
 	public function test_cases() {
+		$tag_base      = get_option( 'tag_base' ) ? get_option( 'tag_base' ) : 'tag';
+		$category_base = get_option( 'category_base' ) ? get_option( 'category_base' ) : 'category';
+
 		// Array of arrays of path => should match
 		return apply_filters( 'rewrite_testing_tests', array(
 			'Query Test' => array(
@@ -271,21 +274,21 @@ class Rewrite_Testing {
 			),
 
 			'Categories' => array(
-				'/category/uncategorized/feed/atom/' => 'index.php?category_name=$matches[1]&feed=$matches[2]',
-				'/category/parent/child/feed/rss'    => 'index.php?category_name=$matches[1]&feed=$matches[2]',
-				'/category/uncategorized/atom/'      => 'index.php?category_name=$matches[1]&feed=$matches[2]',
-				'/category/parent/child/feed'        => 'index.php?category_name=$matches[1]&feed=$matches[2]',
-				'/category/uncategorized/page/345'   => 'index.php?category_name=$matches[1]&paged=$matches[2]',
-				'/category/parent/child/page2'       => 'index.php?category_name=$matches[1]&paged=$matches[2]',
-				'/category/uncategorized/'           => 'index.php?category_name=$matches[1]',
-				'/category/parent/child'             => 'index.php?category_name=$matches[1]',
+				"/{$category_base}/uncategorized/feed/atom/" => 'index.php?category_name=$matches[1]&feed=$matches[2]',
+				"/{$category_base}/parent/child/feed/rss"    => 'index.php?category_name=$matches[1]&feed=$matches[2]',
+				"/{$category_base}/uncategorized/atom/"      => 'index.php?category_name=$matches[1]&feed=$matches[2]',
+				"/{$category_base}/parent/child/feed"        => 'index.php?category_name=$matches[1]&feed=$matches[2]',
+				"/{$category_base}/uncategorized/page/345"   => 'index.php?category_name=$matches[1]&paged=$matches[2]',
+				"/{$category_base}/parent/child/page2"       => 'index.php?category_name=$matches[1]&paged=$matches[2]',
+				"/{$category_base}/uncategorized/"           => 'index.php?category_name=$matches[1]',
+				"/{$category_base}/parent/child"             => 'index.php?category_name=$matches[1]',
 			),
 
 			'Tags' => array(
-				'/tag/hello/feed/atom/' => 'index.php?tag=$matches[1]&feed=$matches[2]',
-				'/tag/hello/feed/'      => 'index.php?tag=$matches[1]&feed=$matches[2]',
-				'/tag/hello/page/123'   => 'index.php?tag=$matches[1]&paged=$matches[2]',
-				'/tag/hello/'           => 'index.php?tag=$matches[1]',
+				"/{$tag_base}/hello/feed/atom/" => 'index.php?tag=$matches[1]&feed=$matches[2]',
+				"/{$tag_base}/hello/feed/"      => 'index.php?tag=$matches[1]&feed=$matches[2]',
+				"/{$tag_base}/hello/page/123"   => 'index.php?tag=$matches[1]&paged=$matches[2]',
+				"/{$tag_base}/hello/"           => 'index.php?tag=$matches[1]',
 			),
 
 			'Post Type' => array(
