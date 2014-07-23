@@ -72,6 +72,7 @@ rewrites; these are just to serve as a demonstration.
 * Adds debug bar panel/status for CI(ish)
 * Adds "enhanced" query-based rewrite tests
 * Adds filters for providing custom test routines.
+* Adds support for customized category/tag base (props johnbillion)
 
 = 0.1.1 =
 
