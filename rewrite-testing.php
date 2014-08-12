@@ -264,8 +264,12 @@ class Rewrite_Testing {
 	 * @return array
 	 */
 	public function test_cases() {
+		global $wp_rewrite;
+
 		$tag_base      = get_option( 'tag_base' ) ? get_option( 'tag_base' ) : 'tag';
 		$category_base = get_option( 'category_base' ) ? get_option( 'category_base' ) : 'category';
+		$search_base   = $wp_rewrite->search_base;
+		$author_base   = $wp_rewrite->author_base;
 
 		// Array of arrays of path => should match
 		return apply_filters( 'rewrite_testing_tests', array(
@@ -315,17 +319,17 @@ class Rewrite_Testing {
 			),
 
 			'Search' => array(
-				'/search/hello/feed/atom/'  => 'index.php?s=$matches[1]&feed=$matches[2]',
-				'/search/hello/world/feed/' => 'index.php?s=$matches[1]&feed=$matches[2]',
-				'/search/hello/page/123'    => 'index.php?s=$matches[1]&paged=$matches[2]',
-				'/search/hello/'            => 'index.php?s=$matches[1]',
+				"/{$search_base}/hello/feed/atom/"  => 'index.php?s=$matches[1]&feed=$matches[2]',
+				"/{$search_base}/hello/world/feed/" => 'index.php?s=$matches[1]&feed=$matches[2]',
+				"/{$search_base}/hello/page/123"    => 'index.php?s=$matches[1]&paged=$matches[2]',
+				"/{$search_base}/hello/"            => 'index.php?s=$matches[1]',
 			),
 
 			'Authors' => array(
-				'/author/hello/feed/atom/' => 'index.php?author_name=$matches[1]&feed=$matches[2]',
-				'/author/hello/feed/'      => 'index.php?author_name=$matches[1]&feed=$matches[2]',
-				'/author/hello/page/123'   => 'index.php?author_name=$matches[1]&paged=$matches[2]',
-				'/author/hello/'           => 'index.php?author_name=$matches[1]',
+				"/{$author_base}/hello/feed/atom/" => 'index.php?author_name=$matches[1]&feed=$matches[2]',
+				"/{$author_base}/hello/feed/"      => 'index.php?author_name=$matches[1]&feed=$matches[2]',
+				"/{$author_base}/hello/page/123"   => 'index.php?author_name=$matches[1]&paged=$matches[2]',
+				"/{$author_base}/hello/"           => 'index.php?author_name=$matches[1]',
 			),
 
 			'Dates' => array(
