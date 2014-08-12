@@ -291,7 +291,7 @@ class Rewrite_Testing {
 				"/{$tag_base}/hello/"           => 'index.php?tag=$matches[1]',
 			),
 
-			'Post Type' => array(
+			'Post Format' => array(
 				'/type/hello/feed/atom/' => 'index.php?post_format=$matches[1]&feed=$matches[2]',
 				'/type/hello/feed/'      => 'index.php?post_format=$matches[1]&feed=$matches[2]',
 				'/type/hello/page/123'   => 'index.php?post_format=$matches[1]&paged=$matches[2]',
