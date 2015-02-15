@@ -90,7 +90,7 @@ class Rewrite_Testing {
 	 * @return void
 	 */
 	function action_admin_notices() {
-		echo '<div class="message updated"><p>' . __( 'Rewrite rules flushed.', 'rewrite-testing' ) . '</p></div>';
+		echo '<div class="message updated"><p>' . esc_html__( 'Rewrite rules flushed.', 'rewrite-testing' ) . '</p></div>';
 	}
 
 
@@ -158,7 +158,7 @@ class Rewrite_Testing {
 				<h3><?php esc_html_e( 'Test Results', 'rewrite-testing' ); ?></h3>
 				<?php if ( $this->errors ) : ?>
 					<div class="message error">
-						<p><?php printf( _n( '1 test failed!', '%d tests failed!', $this->errors, 'rewrite-testing' ), $this->errors ); ?></p>
+						<p><?php echo esc_html( sprintf( _n( '1 test failed!', '%d tests failed!', $this->errors, 'rewrite-testing' ), $this->errors ) ); ?></p>
 					</div>
 				<?php else : ?>
 					<div class="message updated">
