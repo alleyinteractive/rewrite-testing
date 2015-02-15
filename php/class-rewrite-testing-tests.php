@@ -46,7 +46,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 
 			$target = $rule = false;
 			// Loop through all the rewrite rules until we find a match
-			foreach( $this->basic_rewrite_rules as $rule => $maybe_target ) {
+			foreach ( $this->basic_rewrite_rules as $rule => $maybe_target ) {
 				if ( preg_match( "!^$rule!", $request, $matches ) ) {
 					$target = $maybe_target['rewrite'];
 					break;
@@ -84,8 +84,8 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 				}
 			} else {
 				foreach ( (array) $this->extended_rewrite_rules as $match => $query ) {
-					if ( preg_match("#^$match#", $request, $matches) ||
-						preg_match("#^$match#", urldecode( $request ), $matches) ) {
+					if ( preg_match( "#^$match#", $request, $matches ) ||
+						preg_match( "#^$match#", urldecode( $request ), $matches ) ) {
 
 						if ( $wp_rewrite->use_verbose_page_rules && preg_match( '/pagename=\$matches\[([0-9]+)\]/', $query, $varmatch ) ) {
 							// this is a verbose page match, lets check to be sure about it
@@ -103,7 +103,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 
 			if ( isset( $matched_rule ) ) {
 				// Trim the query of everything up to the '?'.
-				$query = preg_replace( "!^.+\?!", '', $query );
+				$query = preg_replace( '!^.+\?!', '', $query );
 
 				// Substitute the substring matches into the query.
 				$query = addslashes( WP_MatchesMapRegex::apply( $query, $matches ) );
@@ -144,12 +144,12 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 					$query_vars[ $wpvar ] = $perma_query_vars[ $wpvar ];
 				}
 
-				if ( !empty( $query_vars[ $wpvar ] ) ) {
+				if ( ! empty( $query_vars[ $wpvar ] ) ) {
 					if ( ! is_array( $query_vars[ $wpvar ] ) ) {
 						$query_vars[ $wpvar ] = (string) $query_vars[ $wpvar ];
 					} else {
 						foreach ( $query_vars[ $wpvar ] as $vkey => $v ) {
-							if ( !is_object( $v ) ) {
+							if ( ! is_object( $v ) ) {
 								$query_vars[ $wpvar ][ $vkey ] = (string) $v;
 							}
 						}
@@ -181,7 +181,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 				}
 			}
 
-			foreach ( $wp->private_query_vars as $var) {
+			foreach ( $wp->private_query_vars as $var ) {
 				if ( isset( $this_extra_query_vars[ $var ] ) ) {
 					$query_vars[ $var ] = $this_extra_query_vars[ $var ];
 				}
@@ -212,7 +212,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 
 			$rewrite_rules_array = array();
 			$rewrite_rules = get_option( 'rewrite_rules' );
-			if ( !$rewrite_rules ) {
+			if ( ! $rewrite_rules ) {
 				$rewrite_rules = array();
 			}
 			// Track down which rewrite rules are associated with which methods by breaking it down
@@ -222,7 +222,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			$rewrite_rules_by_source['root'] = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->root . '/', EP_ROOT );
 			$rewrite_rules_by_source['comments'] = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->root . $wp_rewrite->comments_base, EP_COMMENTS, true, true, true, false );
 			$rewrite_rules_by_source['search'] = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->get_search_permastruct(), EP_SEARCH );
-			$rewrite_rules_by_source['author'] = $wp_rewrite->generate_rewrite_rules($wp_rewrite->get_author_permastruct(), EP_AUTHORS );
+			$rewrite_rules_by_source['author'] = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->get_author_permastruct(), EP_AUTHORS );
 			$rewrite_rules_by_source['page'] = $wp_rewrite->page_rewrite_rules();
 
 			// Extra permastructs including tags, categories, etc.
@@ -240,21 +240,21 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			}
 
 			// Apply the filters used in core just in case
-			foreach( $rewrite_rules_by_source as $source => $rules ) {
+			foreach ( $rewrite_rules_by_source as $source => $rules ) {
 				$rewrite_rules_by_source[$source] = apply_filters( $source . '_rewrite_rules', $rules );
 				if ( 'post_tag' == $source ) {
 					$rewrite_rules_by_source[$source] = apply_filters( 'tag_rewrite_rules', $rules );
 				}
 			}
 
-			foreach( $rewrite_rules as $rule => $rewrite ) {
+			foreach ( $rewrite_rules as $rule => $rewrite ) {
 				$rewrite_rules_array[$rule]['rewrite'] = $rewrite;
-				foreach( $rewrite_rules_by_source as $source => $rules ) {
+				foreach ( $rewrite_rules_by_source as $source => $rules ) {
 					if ( array_key_exists( $rule, $rules ) ) {
 						$rewrite_rules_array[$rule]['source'] = $source;
 					}
 				}
-				if ( !isset( $rewrite_rules_array[$rule]['source'] ) ) {
+				if ( ! isset( $rewrite_rules_array[$rule]['source'] ) ) {
 					$rewrite_rules_array[$rule]['source'] = apply_filters( 'rewrite_rules_inspector_source', 'other', $rule, $rewrite );
 				}
 			}
@@ -262,21 +262,21 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			// Find any rewrite rules that should've been generated but weren't
 			$maybe_missing = $wp_rewrite->rewrite_rules();
 			$missing_rules = array();
-			foreach( $maybe_missing as $rule => $rewrite ) {
-				if ( !array_key_exists( $rule, $rewrite_rules_array ) ) {
+			foreach ( $maybe_missing as $rule => $rewrite ) {
+				if ( ! array_key_exists( $rule, $rewrite_rules_array ) ) {
 					$missing_rules[ $rule ] = array(
 						'rewrite' => $rewrite
 					);
 				}
 			}
-			if ( !empty( $missing_rules ) ) {
+			if ( ! empty( $missing_rules ) ) {
 				// We have missing rules! Abort the tests with an instance of WP_Error
 				return new WP_Error( 'rt_missing_rules', __( "The site's rewrite rules need to be flushed", 'rewrite-testing' ), $missing_rules );
 			}
 
 			// Set the sources used in our filtering
 			$sources = array( 'all' );
-			foreach( $rewrite_rules_array as $rule => $data ) {
+			foreach ( $rewrite_rules_array as $rule => $data ) {
 				$sources[] = $data['source'];
 			}
 			$this->sources = array_unique( $sources );
