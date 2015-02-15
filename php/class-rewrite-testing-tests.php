@@ -89,8 +89,9 @@ class Rewrite_Testing_Tests {
 
 					if ( $wp_rewrite->use_verbose_page_rules && preg_match( '/pagename=\$matches\[([0-9]+)\]/', $query, $varmatch ) ) {
 						// this is a verbose page match, lets check to be sure about it
-						if ( ! get_page_by_path( $matches[ $varmatch[1] ] ) )
+						if ( ! get_page_by_path( $matches[ $varmatch[1] ] ) ) {
 					 		continue;
+						}
 					}
 
 					// Got a match.
@@ -114,8 +115,9 @@ class Rewrite_Testing_Tests {
 			parse_str( $query, $perma_query_vars );
 
 			// If we're processing a 404 request, clear the error var since we found something.
-			if ( '404' == $error )
+			if ( '404' == $error ) {
 				unset( $error, $_GET['error'] );
+			}
 		}
 
 		/**
@@ -129,15 +131,18 @@ class Rewrite_Testing_Tests {
 		 */
 		$public_query_vars = apply_filters( 'query_vars', $wp->public_query_vars );
 
-		foreach ( get_post_types( array(), 'objects' ) as $post_type => $t )
-			if ( $t->query_var )
+		foreach ( get_post_types( array(), 'objects' ) as $post_type => $t ) {
+			if ( $t->query_var ) {
 				$post_type_query_vars[$t->query_var] = $post_type;
+			}
+		}
 
 		foreach ( $public_query_vars as $wpvar ) {
-			if ( isset( $this_extra_query_vars[ $wpvar ] ) )
+			if ( isset( $this_extra_query_vars[ $wpvar ] ) ) {
 				$query_vars[ $wpvar ] = $this_extra_query_vars[ $wpvar ];
-			elseif ( isset( $perma_query_vars[ $wpvar ] ) )
+			} elseif ( isset( $perma_query_vars[ $wpvar ] ) ) {
 				$query_vars[ $wpvar ] = $perma_query_vars[ $wpvar ];
+			}
 
 			if ( !empty( $query_vars[ $wpvar ] ) ) {
 				if ( ! is_array( $query_vars[ $wpvar ] ) ) {
@@ -158,28 +163,33 @@ class Rewrite_Testing_Tests {
 		}
 
 		// Convert urldecoded spaces back into +
-		foreach ( get_taxonomies( array() , 'objects' ) as $taxonomy => $t )
-			if ( $t->query_var && isset( $query_vars[ $t->query_var ] ) )
+		foreach ( get_taxonomies( array() , 'objects' ) as $taxonomy => $t ) {
+			if ( $t->query_var && isset( $query_vars[ $t->query_var ] ) ) {
 				$query_vars[ $t->query_var ] = str_replace( ' ', '+', $query_vars[ $t->query_var ] );
+			}
+		}
 
 		// Limit publicly queried post_types to those that are publicly_queryable
 		if ( isset( $query_vars['post_type']) ) {
 			$queryable_post_types = get_post_types( array( 'publicly_queryable' => true ) );
 			if ( ! is_array( $query_vars['post_type'] ) ) {
-				if ( ! in_array( $query_vars['post_type'], $queryable_post_types ) )
+				if ( ! in_array( $query_vars['post_type'], $queryable_post_types ) ) {
 					unset( $query_vars['post_type'] );
+				}
 			} else {
 				$query_vars['post_type'] = array_intersect( $query_vars['post_type'], $queryable_post_types );
 			}
 		}
 
 		foreach ( $wp->private_query_vars as $var) {
-			if ( isset( $this_extra_query_vars[ $var ] ) )
+			if ( isset( $this_extra_query_vars[ $var ] ) ) {
 				$query_vars[ $var ] = $this_extra_query_vars[ $var ];
+			}
 		}
 
-		if ( isset($error) )
+		if ( isset($error) ) {
 			$query_vars['error'] = $error;
+		}
 
 		/**
 		 * Filter the array of parsed query variables.
@@ -202,8 +212,9 @@ class Rewrite_Testing_Tests {
 
 		$rewrite_rules_array = array();
 		$rewrite_rules = get_option( 'rewrite_rules' );
-		if ( !$rewrite_rules )
+		if ( !$rewrite_rules ) {
 			$rewrite_rules = array();
+		}
 		// Track down which rewrite rules are associated with which methods by breaking it down
 		$rewrite_rules_by_source = array();
 		$rewrite_rules_by_source['post'] = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->permalink_structure, EP_PERMALINK );
@@ -218,10 +229,11 @@ class Rewrite_Testing_Tests {
 		foreach ( $wp_rewrite->extra_permastructs as $permastructname => $permastruct ) {
 			if ( is_array( $permastruct ) ) {
 				// Pre 3.4 compat
-				if ( count( $permastruct ) == 2 )
+				if ( count( $permastruct ) == 2 ) {
 					$rewrite_rules_by_source[$permastructname] = $wp_rewrite->generate_rewrite_rules( $permastruct[0], $permastruct[1] );
-				else
+				} else {
 					$rewrite_rules_by_source[$permastructname] = $wp_rewrite->generate_rewrite_rules( $permastruct['struct'], $permastruct['ep_mask'], $permastruct['paged'], $permastruct['feed'], $permastruct['forcomments'], $permastruct['walk_dirs'], $permastruct['endpoints'] );
+				}
 			} else {
 				$rewrite_rules_by_source[$permastructname] = $wp_rewrite->generate_rewrite_rules( $permastruct, EP_NONE );
 			}
@@ -230,8 +242,9 @@ class Rewrite_Testing_Tests {
 		// Apply the filters used in core just in case
 		foreach( $rewrite_rules_by_source as $source => $rules ) {
 			$rewrite_rules_by_source[$source] = apply_filters( $source . '_rewrite_rules', $rules );
-			if ( 'post_tag' == $source )
+			if ( 'post_tag' == $source ) {
 				$rewrite_rules_by_source[$source] = apply_filters( 'tag_rewrite_rules', $rules );
+			}
 		}
 
 		foreach( $rewrite_rules as $rule => $rewrite ) {
@@ -241,8 +254,9 @@ class Rewrite_Testing_Tests {
 					$rewrite_rules_array[$rule]['source'] = $source;
 				}
 			}
-			if ( !isset( $rewrite_rules_array[$rule]['source'] ) )
+			if ( !isset( $rewrite_rules_array[$rule]['source'] ) ) {
 				$rewrite_rules_array[$rule]['source'] = apply_filters( 'rewrite_rules_inspector_source', 'other', $rule, $rewrite );
+			}
 		}
 
 		// Find any rewrite rules that should've been generated but weren't

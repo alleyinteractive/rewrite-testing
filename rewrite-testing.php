@@ -66,10 +66,11 @@ class Rewrite_Testing {
 
 		add_action( 'generate_rewrite_rules', array( $this, 'clear_cache' ) );
 
-		if ( isset( $_GET['page'], $_GET['action'] ) && 'rewrite-testing' == $_GET['page'] && 'flush-rules' == $_GET['action'] )
+		if ( isset( $_GET['page'], $_GET['action'] ) && 'rewrite-testing' == $_GET['page'] && 'flush-rules' == $_GET['action'] ) {
 			add_action( 'admin_init', array( $this, 'flush_rules' ) );
-		elseif ( isset( $_GET['page'], $_GET['message'] ) && 'rewrite-testing' == $_GET['page'] && 'flush-success' == $_GET['message'] )
+		} elseif ( isset( $_GET['page'], $_GET['message'] ) && 'rewrite-testing' == $_GET['page'] && 'flush-success' == $_GET['message'] ) {
 			add_action( 'admin_notices', array( $this, 'action_admin_notices' ) );
+		}
 	}
 
 
@@ -245,8 +246,9 @@ class Rewrite_Testing {
 
 		// Check nonce and permissions
 		check_admin_referer( 'flush-rules' );
-		if ( !current_user_can( 'manage_options' ) )
+		if ( !current_user_can( 'manage_options' ) ) {
 			wp_die( __( 'You do not have permissions to perform this action.' ) );
+		}
 
 		flush_rewrite_rules( false );
 
@@ -274,7 +276,7 @@ class Rewrite_Testing {
 		// Array of arrays of path => should match
 		return apply_filters( 'rewrite_testing_tests', array(
 			'Query Test' => array(
-				'/query-test/' => array( 'query' => array( 'page' => '', 'pagename' => 'query-test' ) )
+				'/query-test/' => array( 'query' => array( 'page' => '', 'pagename' => 'query-test' ) ),
 			),
 
 			'Categories' => array(
