@@ -39,7 +39,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 				$this->basic_rewrite_rules = $this->get_rules();
 				if ( is_wp_error( $this->basic_rewrite_rules ) ) {
 					return $this->basic_rewrite_rules;
-				} elseif ( empty( $this->basic_rewrite_rules) ) {
+				} elseif ( empty( $this->basic_rewrite_rules ) ) {
 					return new WP_Error( 'rt_empty_rules', __( 'The rewrite rules look to be missing. Try flushing or check your permalink settings.', 'rewrite-testing' ) );
 				}
 			}
@@ -80,7 +80,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 				if ( isset( $this->extended_rewrite_rules['$'] ) ) {
 					$matched_rule = '$';
 					$query = $this->extended_rewrite_rules['$'];
-					$matches = array('');
+					$matches = array( '' );
 				}
 			} else {
 				foreach ( (array) $this->extended_rewrite_rules as $match => $query ) {
@@ -133,7 +133,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 
 			foreach ( get_post_types( array(), 'objects' ) as $post_type => $t ) {
 				if ( $t->query_var ) {
-					$post_type_query_vars[$t->query_var] = $post_type;
+					$post_type_query_vars[ $t->query_var ] = $post_type;
 				}
 			}
 
@@ -155,7 +155,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 						}
 					}
 
-					if ( isset($post_type_query_vars[ $wpvar ] ) ) {
+					if ( isset( $post_type_query_vars[ $wpvar ] ) ) {
 						$query_vars['post_type'] = $post_type_query_vars[ $wpvar ];
 						$query_vars['name'] = $query_vars[ $wpvar ];
 					}
@@ -170,7 +170,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			}
 
 			// Limit publicly queried post_types to those that are publicly_queryable
-			if ( isset( $query_vars['post_type']) ) {
+			if ( isset( $query_vars['post_type'] ) ) {
 				$queryable_post_types = get_post_types( array( 'publicly_queryable' => true ) );
 				if ( ! is_array( $query_vars['post_type'] ) ) {
 					if ( ! in_array( $query_vars['post_type'], $queryable_post_types ) ) {
@@ -187,7 +187,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 				}
 			}
 
-			if ( isset($error) ) {
+			if ( isset( $error ) ) {
 				$query_vars['error'] = $error;
 			}
 
@@ -229,33 +229,33 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			foreach ( $wp_rewrite->extra_permastructs as $permastructname => $permastruct ) {
 				if ( is_array( $permastruct ) ) {
 					// Pre 3.4 compat
-					if ( count( $permastruct ) == 2 ) {
-						$rewrite_rules_by_source[$permastructname] = $wp_rewrite->generate_rewrite_rules( $permastruct[0], $permastruct[1] );
+					if ( 2 == count( $permastruct ) ) {
+						$rewrite_rules_by_source[ $permastructname ] = $wp_rewrite->generate_rewrite_rules( $permastruct[0], $permastruct[1] );
 					} else {
-						$rewrite_rules_by_source[$permastructname] = $wp_rewrite->generate_rewrite_rules( $permastruct['struct'], $permastruct['ep_mask'], $permastruct['paged'], $permastruct['feed'], $permastruct['forcomments'], $permastruct['walk_dirs'], $permastruct['endpoints'] );
+						$rewrite_rules_by_source[ $permastructname ] = $wp_rewrite->generate_rewrite_rules( $permastruct['struct'], $permastruct['ep_mask'], $permastruct['paged'], $permastruct['feed'], $permastruct['forcomments'], $permastruct['walk_dirs'], $permastruct['endpoints'] );
 					}
 				} else {
-					$rewrite_rules_by_source[$permastructname] = $wp_rewrite->generate_rewrite_rules( $permastruct, EP_NONE );
+					$rewrite_rules_by_source[ $permastructname ] = $wp_rewrite->generate_rewrite_rules( $permastruct, EP_NONE );
 				}
 			}
 
 			// Apply the filters used in core just in case
 			foreach ( $rewrite_rules_by_source as $source => $rules ) {
-				$rewrite_rules_by_source[$source] = apply_filters( $source . '_rewrite_rules', $rules );
+				$rewrite_rules_by_source[ $source ] = apply_filters( $source . '_rewrite_rules', $rules );
 				if ( 'post_tag' == $source ) {
-					$rewrite_rules_by_source[$source] = apply_filters( 'tag_rewrite_rules', $rules );
+					$rewrite_rules_by_source[ $source ] = apply_filters( 'tag_rewrite_rules', $rules );
 				}
 			}
 
 			foreach ( $rewrite_rules as $rule => $rewrite ) {
-				$rewrite_rules_array[$rule]['rewrite'] = $rewrite;
+				$rewrite_rules_array[ $rule ]['rewrite'] = $rewrite;
 				foreach ( $rewrite_rules_by_source as $source => $rules ) {
 					if ( array_key_exists( $rule, $rules ) ) {
-						$rewrite_rules_array[$rule]['source'] = $source;
+						$rewrite_rules_array[ $rule ]['source'] = $source;
 					}
 				}
-				if ( ! isset( $rewrite_rules_array[$rule]['source'] ) ) {
-					$rewrite_rules_array[$rule]['source'] = apply_filters( 'rewrite_rules_inspector_source', 'other', $rule, $rewrite );
+				if ( ! isset( $rewrite_rules_array[ $rule ]['source'] ) ) {
+					$rewrite_rules_array[ $rule ]['source'] = apply_filters( 'rewrite_rules_inspector_source', 'other', $rule, $rewrite );
 				}
 			}
 
@@ -265,7 +265,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			foreach ( $maybe_missing as $rule => $rewrite ) {
 				if ( ! array_key_exists( $rule, $rewrite_rules_array ) ) {
 					$missing_rules[ $rule ] = array(
-						'rewrite' => $rewrite
+						'rewrite' => $rewrite,
 					);
 				}
 			}

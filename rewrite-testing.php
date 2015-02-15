@@ -430,7 +430,7 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 						'status' => '',
 						'rule'   => '',
 						'target' => '',
-						'query'  => ''
+						'query'  => '',
 					);
 
 					// Setup our "match path" to run against the regex
