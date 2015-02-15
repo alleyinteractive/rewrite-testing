@@ -23,7 +23,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-if ( !class_exists( 'Rewrite_Testing' ) ) :
+if ( ! class_exists( 'Rewrite_Testing' ) ) :
 
 class Rewrite_Testing {
 
@@ -145,7 +145,7 @@ class Rewrite_Testing {
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach( (array) $rules as $rule => $rewrite ) : ?>
+							<?php foreach ( (array) $rules as $rule => $rewrite ) : ?>
 							<tr>
 								<td><?php echo esc_html( $rule ) ?></td>
 								<td><?php echo esc_html( $rewrite['rewrite'] ) ?></td>
@@ -246,7 +246,7 @@ class Rewrite_Testing {
 
 		// Check nonce and permissions
 		check_admin_referer( 'flush-rules' );
-		if ( !current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( __( 'You do not have permissions to perform this action.' ) );
 		}
 
