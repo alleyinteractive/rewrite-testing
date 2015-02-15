@@ -459,6 +459,8 @@ class Rewrite_Testing {
 						return $extended_results;
 					}
 					list( $result['rule'], $result['query'] ) = $extended_results;
+					ksort( $test['query'] );
+					ksort( $result['query'] );
 					$extended_unit_result = $test['query'] === $result['query'];
 				}
 
