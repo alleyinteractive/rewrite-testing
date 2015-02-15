@@ -44,7 +44,7 @@ class Rewrite_Testing_Tests {
 			}
 		}
 
-		$target = false;
+		$target = $rule = false;
 		// Loop through all the rewrite rules until we find a match
 		foreach( $this->basic_rewrite_rules as $rule => $maybe_target ) {
 			if ( preg_match( "!^$rule!", $request, $matches ) ) {
