@@ -37,6 +37,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 		public function basic_test( $request ) {
 			if ( false === $this->basic_rewrite_rules ) {
 				$this->basic_rewrite_rules = $this->get_rules();
+				$this->tested = array();
 				if ( is_wp_error( $this->basic_rewrite_rules ) ) {
 					return $this->basic_rewrite_rules;
 				} elseif ( empty( $this->basic_rewrite_rules ) ) {
@@ -49,11 +50,20 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			foreach ( $this->basic_rewrite_rules as $rule => $maybe_target ) {
 				if ( preg_match( "!^$rule!", $request, $matches ) ) {
 					$target = $maybe_target['rewrite'];
+					$this->tested[ $rule ] = $maybe_target;
 					break;
 				}
 			}
 
 			return array( $rule, $target );
+		}
+
+		public function get_tested() {
+			return $this->tested;
+		}
+
+		public function get_basic_rewrite_rules() {
+			return $this->basic_rewrite_rules;
 		}
 
 		public function extended_test( $request ) {
