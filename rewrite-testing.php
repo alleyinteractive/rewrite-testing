@@ -110,6 +110,7 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 			);
 			?>
 			<style type="text/css">
+				#rewrite_testing_untested tr:nth-child(even),
 				#rt_test_results tr:nth-child(even) {
 					background-color: #f9f9f9;
 				}
@@ -179,35 +180,31 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 						</div>
 					<?php endif ?>
 
-					<?php
-						$tested = count( $summary['tested'] );
-						$missed = count( $summary['missed'] );
-						$total = $tested + $missed;
-						$percent = ( 100 / $total ) * $tested;
-					?>
-
 					<div class="message notice notice-info">
-						<p><?php printf( __( '%1$s/%2$s rewrite rules covered (%3$s%%). <a href="%4$s">Show untested rules</a>', 'rewrite-testing' ), number_format_i18n( $tested ), number_format_i18n( $total ), number_format_i18n( $percent ), '#rewrite_testing_untested' ); ?>
+						<p><?php
+							printf(
+								__( '%1$s/%2$s rewrite rules covered (%3$s%%).', 'rewrite-testing' ),
+								number_format_i18n( $summary['tested'] ),
+								number_format_i18n( $summary['total'] ),
+								number_format_i18n( $summary['coverage'] )
+							);
+							if ( ! empty( $summary['missed_rules'] ) ) {
+								printf(
+									__( ' <a href="%1$s">Show untested rules</a>', 'rewrite-testing' ),
+									'#rewrite_testing_untested'
+								);
+							}
+						?></p>
 					</div>
 
-					<table class="wp-list-table widefat" id="rewrite_testing_untested">
-						<thead>
-							<tr>
-								<th><?php esc_html_e( 'Rule', 'rewrite-testing' ); ?></th>
-								<th><?php esc_html_e( 'Rewrite', 'rewrite-testing' ); ?></th>
-								<th><?php esc_html_e( 'Source', 'rewrite-testing' ); ?></th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ( $summary['missed'] as $rule => $target ) { ?>
-								<tr>
-									<td><strong><?php echo esc_html( $rule ); ?></strong></td>
-									<td><?php echo esc_html( $target['rewrite'] ); ?></td>
-									<td><?php echo esc_html( $target['source'] ); ?></td>
-								</tr>
-							<?php } ?>
-						</tbody>
-					</table>
+					<?php if ( ! empty( $summary['missed_rules'] ) ) { ?>
+						<table class="wp-list-table widefat" id="rewrite_testing_untested">
+							<?php $this->coverage_table_head(); ?>
+							<tbody>
+								<?php array_walk( $summary['missed_rules'], array( $this, 'untested_row' ) ) ?>
+							</tbody>
+						</table>
+					<?php } ?>
 
 					<table class="wp-list-table widefat">
 						<?php $this->results_table_head() ?>
@@ -233,6 +230,23 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					<th scope="col" class="manage-column"><?php esc_html_e( 'Status', 'rewrite-testing' ); ?></th>
 					<th scope="col" class="manage-column"><?php esc_html_e( 'Test Path', 'rewrite-testing' ); ?></th>
 					<th scope="col" class="manage-column"><?php esc_html_e( 'Results', 'rewrite-testing' ); ?></th>
+				</tr>
+			</thead>
+			<?php
+		}
+
+		/**
+		 * Output the head for the rewrite test coverage table.
+		 *
+		 * @return void
+		 */
+		public function coverage_table_head() {
+			?>
+			<thead>
+				<tr>
+					<th scope="col" class="manage-column"><?php esc_html_e( 'Rule', 'rewrite-testing' ); ?></th>
+					<th scope="col" class="manage-column"><?php esc_html_e( 'Rewrite', 'rewrite-testing' ); ?></th>
+					<th scope="col" class="manage-column"><?php esc_html_e( 'Source', 'rewrite-testing' ); ?></th>
 				</tr>
 			</thead>
 			<?php
@@ -275,6 +289,28 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					<strong><?php esc_html_e( 'Matched:', 'rewrite-testing' ); ?></strong> <?php echo esc_html( $row['rule'] ) ?>
 					<?php do_action( 'rewrite_testing_unit_results', $row ) ?>
 				</td>
+			</tr>
+			<?php
+		}
+
+		/**
+		 * Output a row representing a rewrite rule that was not covered during a test.
+		 *
+		 * @param  array $target {
+		 *     Row of data for the rewrite rule.
+		 *
+		 *     @type string $rewrite The rewrite query.
+		 *     @type string $source  The source of the rewrite rule.
+		 * }
+		 * @param  string $rule The rewrite rule.
+		 * @return void
+		 */
+		public function untested_row( $target, $rule ) {
+			?>
+			<tr>
+				<td><strong><?php echo esc_html( $rule ); ?></strong></td>
+				<td><?php echo esc_html( $target['rewrite'] ); ?></td>
+				<td><?php echo esc_html( $target['source'] ); ?></td>
 			</tr>
 			<?php
 		}
@@ -526,8 +562,12 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 				$this->summary['status'] = __( 'Passing', 'rewrite-testing' );
 			}
 
-			$this->summary['tested'] = Rewrite_Testing_Tests()->get_tested();
-			$this->summary['missed'] = array_diff_key( Rewrite_Testing_Tests()->get_basic_rewrite_rules(), Rewrite_Testing_Tests()->get_tested() );
+			$this->summary['tested_rules'] = Rewrite_Testing_Tests()->get_tested();
+			$this->summary['missed_rules'] = array_diff_key( Rewrite_Testing_Tests()->get_rewrite_rules(), Rewrite_Testing_Tests()->get_tested() );
+			$this->summary['tested']       = count( $this->summary['tested_rules'] );
+			$this->summary['missed']       = count( $this->summary['missed_rules'] );
+			$this->summary['total']        = $this->summary['tested'] + $this->summary['missed'];
+			$this->summary['coverage']     = floor( ( 100 / $this->summary['total'] ) * $this->summary['tested'] );
 
 			set_transient( $this->transient_key, $this->summary );
 

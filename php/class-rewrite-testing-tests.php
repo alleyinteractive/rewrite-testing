@@ -14,6 +14,8 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 
 		protected $extended_rewrite_rules = false;
 
+		protected $tested = array();
+
 		private function __construct() {
 			/* Don't do anything, needs to be initialized via instance() method */
 		}
@@ -37,7 +39,6 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 		public function basic_test( $request ) {
 			if ( false === $this->basic_rewrite_rules ) {
 				$this->basic_rewrite_rules = $this->get_rules();
-				$this->tested = array();
 				if ( is_wp_error( $this->basic_rewrite_rules ) ) {
 					return $this->basic_rewrite_rules;
 				} elseif ( empty( $this->basic_rewrite_rules ) ) {
@@ -50,7 +51,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			foreach ( $this->basic_rewrite_rules as $rule => $maybe_target ) {
 				if ( preg_match( "!^$rule!", $request, $matches ) ) {
 					$target = $maybe_target['rewrite'];
-					$this->tested[ $rule ] = $maybe_target;
+					$this->tested[ $rule ] = $maybe_target['rewrite'];
 					break;
 				}
 			}
@@ -62,7 +63,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			return $this->tested;
 		}
 
-		public function get_basic_rewrite_rules() {
+		public function get_rewrite_rules() {
 			return $this->basic_rewrite_rules;
 		}
 
@@ -112,6 +113,8 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			}
 
 			if ( isset( $matched_rule ) ) {
+				$this->tested[ $match ] = $query;
+
 				// Trim the query of everything up to the '?'.
 				$query = preg_replace( '!^.+\?!', '', $query );
 
