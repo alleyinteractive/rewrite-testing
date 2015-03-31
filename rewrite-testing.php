@@ -123,6 +123,10 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					border-top-color: #FECFD0;
 					border-bottom-color: #f99b9d;
 				}
+				#rt_test_results td strong {
+				  width: 8em;
+				  display: inline-block;
+				}
 			</style>
 			<div class="wrap">
 				<h2><?php esc_html_e( 'Test & Flush Rewrite Rules', 'rewrite-testing' ); ?></h2>
