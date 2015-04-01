@@ -557,9 +557,11 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 
 			if ( $this->errors ) {
 				$this->summary['status'] = __( 'Failing', 'rewrite-testing' );
+				$this->summary['passing'] = false;
 				$this->summary['error_count'] = $this->errors;
 			} else {
 				$this->summary['status'] = __( 'Passing', 'rewrite-testing' );
+				$this->summary['passing'] = true;
 			}
 
 			$this->summary['tested_rules'] = Rewrite_Testing_Tests()->get_tested();
@@ -642,3 +644,7 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 	add_action( 'after_setup_theme', 'Rewrite_Testing' );
 
 endif;
+
+if ( defined( 'WP_CLI' ) && WP_CLI && is_readable( $wp_cli = dirname( __FILE__ ) . '/class-wp-cli.php' ) ) {
+	include_once $wp_cli;
+}
