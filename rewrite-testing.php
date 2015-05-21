@@ -183,15 +183,15 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					<div class="message notice notice-info">
 						<p><?php
 							printf(
-								__( '%1$s/%2$s rewrite rules covered (%3$s%%).', 'rewrite-testing' ),
+								esc_html__( '%1$s/%2$s rewrite rules covered (%3$s%%).', 'rewrite-testing' ),
 								number_format_i18n( $summary['tested'] ),
 								number_format_i18n( $summary['total'] ),
 								number_format_i18n( $summary['coverage'] )
 							);
 							if ( ! empty( $summary['missed_rules'] ) ) {
 								printf(
-									__( ' <a href="%1$s">Show untested rules</a>', 'rewrite-testing' ),
-									'#rewrite_testing_untested'
+								    ' <a href="#rewrite_testing_untested">%1$s</a>',
+								    esc_html__( 'Show untested rules', 'rewrite-rules' )
 								);
 							}
 						?></p>
