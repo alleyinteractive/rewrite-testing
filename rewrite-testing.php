@@ -124,6 +124,10 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					border-top-color: #FECFD0;
 					border-bottom-color: #f99b9d;
 				}
+				#rt_test_results td strong {
+					width: 8em;
+					display: inline-block;
+				}
 				#rewrite_testing_untested {
 					display: none;
 					margin-bottom: 20px;
