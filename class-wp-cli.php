@@ -303,7 +303,6 @@ class Rewrite_Rule_Test_Command extends WP_CLI_Command {
 		}
 
 		if ( $args['groups'] ) {
-
 			if ( ! is_array( $args['groups'] ) ) {
 				$args['groups'] = explode( ',', $args['groups'] );
 			}
@@ -313,7 +312,6 @@ class Rewrite_Rule_Test_Command extends WP_CLI_Command {
 			if ( empty( $tests ) ) {
 				return new WP_Error( 'no_matching_tests', 'No matching tests found' );
 			}
-
 		}
 
 		foreach ( $tests as $group => $test_cases ) {
