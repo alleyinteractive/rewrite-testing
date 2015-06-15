@@ -188,9 +188,9 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 						<p><?php
 							printf(
 								esc_html__( '%1$s/%2$s rewrite rules covered (%3$s%%).', 'rewrite-testing' ),
-								number_format_i18n( $summary['tested'] ),
-								number_format_i18n( $summary['total'] ),
-								number_format_i18n( $summary['coverage'] )
+								esc_html( number_format_i18n( $summary['tested'] ) ),
+								esc_html( number_format_i18n( $summary['total'] ) ),
+								esc_html( number_format_i18n( $summary['coverage'] ) )
 							);
 							if ( ! empty( $summary['missed_rules'] ) ) {
 								printf(
@@ -330,7 +330,7 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 			// Check nonce and permissions
 			check_admin_referer( 'flush-rules' );
 			if ( ! current_user_can( 'manage_options' ) ) {
-				wp_die( __( 'You do not have permissions to perform this action.' ) );
+				wp_die( esc_html__( 'You do not have permissions to perform this action.' ) );
 			}
 
 			flush_rewrite_rules( false );
