@@ -51,7 +51,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			foreach ( $this->basic_rewrite_rules as $rule => $maybe_target ) {
 				if ( preg_match( "!^$rule!", $request, $matches ) ) {
 					$target = $maybe_target['rewrite'];
-					$this->tested[ $rule ] = $maybe_target['rewrite'];
+					$this->tested[ $rule ] = $maybe_target;
 					break;
 				}
 			}
@@ -113,7 +113,7 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			}
 
 			if ( isset( $matched_rule ) ) {
-				$this->tested[ $match ] = $query;
+				$this->tested[ $match ] = $this->basic_rewrite_rules[ $match ];
 
 				// Trim the query of everything up to the '?'.
 				$query = preg_replace( '!^.+\?!', '', $query );
