@@ -39,10 +39,6 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 			/* Don't do anything, needs to be initialized via instance() method */
 		}
 
-		public function __clone() { wp_die( "Please don't __clone Rewrite_Testing" ); }
-
-		public function __wakeup() { wp_die( "Please don't __wakeup Rewrite_Testing" ); }
-
 		public static function instance() {
 			if ( ! isset( self::$instance ) ) {
 				self::$instance = new Rewrite_Testing;
@@ -482,7 +478,7 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					'/hello/2'                                       => 'index.php?pagename=$matches[1]&page=$matches[2]',
 					'/parent/child/'                                 => 'index.php?pagename=$matches[1]&page=$matches[2]',
 					'/parent/child/2'                                => 'index.php?pagename=$matches[1]&page=$matches[2]',
-				)
+				),
 			) );
 		}
 
