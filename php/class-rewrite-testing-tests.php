@@ -127,6 +127,8 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 				if ( '404' == $error ) {
 					unset( $error, $_GET['error'] );
 				}
+			} else {
+				$matched_rule = __( 'None', 'rewrite-testing' );
 			}
 
 			/**
