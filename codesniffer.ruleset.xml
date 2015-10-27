@@ -21,4 +21,10 @@
 	<rule ref="WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid">
 		<type>warning</type>
 	</rule>
+	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd">
+		<type>warning</type>
+	</rule>
+	<rule ref="PEAR.Functions.FunctionCallSignature.Indent">
+		<type>warning</type>
+	</rule>
 </ruleset>
