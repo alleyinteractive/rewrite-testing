@@ -357,7 +357,6 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 				'Query Test' => array(
 					'/query-test/' => array( 'query' => array( 'page' => '', 'pagename' => 'query-test' ) ),
 				),
-
 				'Categories' => array(
 					"/{$category_base}/uncategorized/feed/atom/" => 'index.php?category_name=$matches[1]&feed=$matches[2]',
 					"/{$category_base}/parent/child/feed/rss"    => 'index.php?category_name=$matches[1]&feed=$matches[2]',
@@ -368,21 +367,18 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					"/{$category_base}/uncategorized/"           => 'index.php?category_name=$matches[1]',
 					"/{$category_base}/parent/child"             => 'index.php?category_name=$matches[1]',
 				),
-
 				'Tags' => array(
 					"/{$tag_base}/hello/feed/atom/" => 'index.php?tag=$matches[1]&feed=$matches[2]',
 					"/{$tag_base}/hello/feed/"      => 'index.php?tag=$matches[1]&feed=$matches[2]',
 					"/{$tag_base}/hello/page/123"   => 'index.php?tag=$matches[1]&paged=$matches[2]',
 					"/{$tag_base}/hello/"           => 'index.php?tag=$matches[1]',
 				),
-
 				'Post Format' => array(
 					'/type/hello/feed/atom/' => 'index.php?post_format=$matches[1]&feed=$matches[2]',
 					'/type/hello/feed/'      => 'index.php?post_format=$matches[1]&feed=$matches[2]',
 					'/type/hello/page/123'   => 'index.php?post_format=$matches[1]&paged=$matches[2]',
 					'/type/hello/'           => 'index.php?post_format=$matches[1]',
 				),
-
 				'Misc' => array(
 					'/robots.txt'        => 'index.php?robots=1',
 					'/wp-rss.php'        => 'index.php?feed=old',
@@ -390,7 +386,6 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					'/wp-app.php/hello'  => 'index.php?error=403',
 					'/wp-register.php'   => 'index.php?register=true',
 				),
-
 				'Homepage' => array(
 					'/feed/atom/'         => 'index.php?&feed=$matches[1]',
 					'/feed'               => 'index.php?&feed=$matches[1]',
@@ -398,21 +393,18 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					'/comments/feed/rss/' => 'index.php?&feed=$matches[1]&withcomments=1',
 					'/comments/atom/'     => 'index.php?&feed=$matches[1]&withcomments=1',
 				),
-
 				'Search' => array(
 					"/{$search_base}/hello/feed/atom/"  => 'index.php?s=$matches[1]&feed=$matches[2]',
 					"/{$search_base}/hello/world/feed/" => 'index.php?s=$matches[1]&feed=$matches[2]',
 					"/{$search_base}/hello/page/123"    => 'index.php?s=$matches[1]&paged=$matches[2]',
 					"/{$search_base}/hello/"            => 'index.php?s=$matches[1]',
 				),
-
 				'Authors' => array(
 					"/{$author_base}/hello/feed/atom/" => 'index.php?author_name=$matches[1]&feed=$matches[2]',
 					"/{$author_base}/hello/feed/"      => 'index.php?author_name=$matches[1]&feed=$matches[2]',
 					"/{$author_base}/hello/page/123"   => 'index.php?author_name=$matches[1]&paged=$matches[2]',
 					"/{$author_base}/hello/"           => 'index.php?author_name=$matches[1]',
 				),
-
 				'Dates' => array(
 					'/2014/1/1/feed/rss/' => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&feed=$matches[4]',
 					'/2014/2/10/rss/'     => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&feed=$matches[4]',
@@ -427,7 +419,6 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					'/2014/page/4567/'    => 'index.php?year=$matches[1]&paged=$matches[2]',
 					'/2014/'              => 'index.php?year=$matches[1]',
 				),
-
 				'Posts' => array(
 					'/2014/1/1/hello/attachment/world/'                 => 'index.php?attachment=$matches[1]',
 					'/2014/2/10/hello/attachment/world/trackback/'      => 'index.php?attachment=$matches[1]&tb=1',
@@ -450,9 +441,7 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					// '/2014/11/31/comment-page-123/'                  => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&cpage=$matches[4]',
 					'/2014/12/comment-page-123/'                        => 'index.php?year=$matches[1]&monthnum=$matches[2]&cpage=$matches[3]',
 					'/2014/comment-page-123/'                           => 'index.php?year=$matches[1]&cpage=$matches[2]',
-
 				),
-
 				'Pages' => array(
 					'/hello/attachment/world/'                       => 'index.php?attachment=$matches[1]',
 					'/parent/child/attachment/world/'                => 'index.php?attachment=$matches[1]',
