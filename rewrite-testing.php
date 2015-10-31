@@ -554,7 +554,7 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 			}
 
 			$this->summary['tested_rules'] = Rewrite_Testing_Tests()->get_tested();
-			$this->summary['missed_rules'] = array_diff_key( Rewrite_Testing_Tests()->get_rewrite_rules(), Rewrite_Testing_Tests()->get_tested() );
+			$this->summary['missed_rules'] = array_diff_key( (array) Rewrite_Testing_Tests()->get_rewrite_rules(), (array) Rewrite_Testing_Tests()->get_tested() );
 			$this->summary['tested']       = count( $this->summary['tested_rules'] );
 			$this->summary['missed']       = count( $this->summary['missed_rules'] );
 			$this->summary['total']        = $this->summary['tested'] + $this->summary['missed'];

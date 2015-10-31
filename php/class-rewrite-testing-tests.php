@@ -66,6 +66,10 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 		public function extended_test( $request ) {
 			global $wp_rewrite, $wp;
 
+			if ( is_wp_error( $this->basic_rewrite_rules ) ) {
+				return $this->basic_rewrite_rules;
+			}
+
 			$query_vars = array();
 			$post_type_query_vars = array();
 
