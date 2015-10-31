@@ -1,10 +1,9 @@
 === Rewrite Rule Testing ===
-Contributors: mboynes, alleyinteractive
-Donate link: url
+Contributors: mboynes, johnbillion, alleyinteractive
 Tags: permalinks, rewrite rules, tests, testing
 Requires at least: 3.9
-Tested up to: 3.9
-Stable tag: 0.2.1
+Tested up to: 4.3
+Stable tag: 1.0.0
 
 Unit test your rewrite rules from the WordPress Admin or Debug Bar.
 
@@ -89,11 +88,6 @@ If you find a bug, it's best to file an issue there than via the WordPress.org
 support forums.
 
 
-== Todo ==
-
-* Add a way to run this as part of phpunit
-
-
 == Installation ==
 
 1. Upload to the /wp-content/plugins/ directory
@@ -117,6 +111,13 @@ rewrites; these are just to serve as a demonstration.
 
 
 == Changelog ==
+
+= 1.0.0 =
+
+* Adds WP-CLI command
+* Adds test coverage report
+* Several bug fixes
+* Improved compliance with WordPress Coding Standards
 
 = 0.2.1 =
 
