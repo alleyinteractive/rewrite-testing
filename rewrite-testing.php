@@ -4,8 +4,8 @@
 	Plugin Name: Rewrite Rule Testing
 	Plugin URI: https://github.com/alleyinteractive/rewrite-testing
 	Description: Unit test your rewrite rules
-	Version: 0.2.1
-	Author: Matthew Boynes
+	Version: 1.0.0
+	Author: Matthew Boynes, John Blackbourn
 	Author URI: http://www.alleyinteractive.com/
 */
 /*  This program is free software; you can redistribute it and/or modify
