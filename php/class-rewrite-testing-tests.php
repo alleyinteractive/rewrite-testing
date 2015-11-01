@@ -20,6 +20,11 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			/* Don't do anything, needs to be initialized via instance() method */
 		}
 
+		/**
+		 * Get instance
+		 *
+		 * @return Rewrite_Testing_Tests
+		 */
 		public static function instance() {
 			if ( ! isset( self::$instance ) ) {
 				self::$instance = new Rewrite_Testing_Tests;
@@ -32,6 +37,13 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			# initialize anything for the singleton here
 		}
 
+		/**
+		 * Run a basic test
+		 *
+		 * @param Rewrite_Testing_Tests $request Request object to test
+		 *
+		 * @return array|bool|object|WP_Error
+		 */
 		public function basic_test( $request ) {
 			if ( false === $this->basic_rewrite_rules ) {
 				$this->basic_rewrite_rules = $this->get_rules();
@@ -55,14 +67,30 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			return array( $rule, $target );
 		}
 
+		/**
+		 * Get test results
+		 *
+		 * @return array
+		 */
 		public function get_tested() {
 			return $this->tested;
 		}
 
+		/**
+		 * Get current rewrite rules
+		 * @return bool|array|WP_Error
+		 */
 		public function get_rewrite_rules() {
 			return $this->basic_rewrite_rules;
 		}
 
+		/**
+		 * Run an extended test
+		 *
+		 * @param Rewrite_Testing_Tests $request Request object to test
+		 *
+		 * @return array|bool|object|WP_Error
+		 */
 		public function extended_test( $request ) {
 			global $wp_rewrite, $wp;
 
@@ -299,8 +327,13 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 			// Return our array of rewrite rules to be used
 			return $rewrite_rules_array;
 		}
-	}
+	} //Rewrite_Testing_Tests
 
+	/**
+	 * Get an instance of the Rewrite_Testing_Tests class
+	 *
+	 * @return Rewrite_Testing_Tests
+	 */
 	function Rewrite_Testing_Tests() {
 		return Rewrite_Testing_Tests::instance();
 	}
