@@ -114,8 +114,8 @@ rewrites; these are just to serve as a demonstration.
 
 = 1.0.0 =
 
-* Adds WP-CLI command
-* Adds test coverage report
+* Adds a `wp rewrite test` command for WP-CLI
+* Adds a test coverage report
 * Several bug fixes
 * Improved compliance with WordPress Coding Standards
 
