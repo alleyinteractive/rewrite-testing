@@ -477,6 +477,14 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 				);
 			}
 
+			if ( has_action( 'rest_api_init', 'wp_oembed_register_route' ) ) {
+				$tests['Embeds'] = array(
+					'/2014/10/5/hello/embed' => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&embed=true',
+					'/parent/embed/'         => 'index.php?pagename=$matches[1]&embed=true',
+					'/parent/child/embed/'   => 'index.php?pagename=$matches[1]&embed=true',
+				);
+			}
+
 			return apply_filters( 'rewrite_testing_tests', $tests );
 		}
 
