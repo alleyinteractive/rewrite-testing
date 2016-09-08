@@ -420,6 +420,10 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					'/2014/rss/'          => 'index.php?year=$matches[1]&feed=$matches[2]',
 					'/2014/page/4567/'    => 'index.php?year=$matches[1]&paged=$matches[2]',
 					'/2014/'              => 'index.php?year=$matches[1]',
+					// This one actually doesn't work. See Trac ticket #28156
+					// '/2014/11/31/comment-page-123/' => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&cpage=$matches[4]',
+					'/2014/12/comment-page-123/'       => 'index.php?year=$matches[1]&monthnum=$matches[2]&cpage=$matches[3]',
+					'/2014/comment-page-123/'          => 'index.php?year=$matches[1]&cpage=$matches[2]',
 				),
 				'Posts' => array(
 					'/2014/1/1/hello/attachment/world/'                 => 'index.php?attachment=$matches[1]',
@@ -439,10 +443,6 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					'/2014/10/20/hello/world/feed/rss/'                 => 'index.php?attachment=$matches[1]&feed=$matches[2]',
 					'/2014/11/30/hello/world/rss/'                      => 'index.php?attachment=$matches[1]&feed=$matches[2]',
 					'/2014/12/31/hello/world/comment-page-2/'           => 'index.php?attachment=$matches[1]&cpage=$matches[2]',
-					// This one actually doesn't work. See Trac ticket #28156
-					// '/2014/11/31/comment-page-123/'                  => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&cpage=$matches[4]',
-					'/2014/12/comment-page-123/'                        => 'index.php?year=$matches[1]&monthnum=$matches[2]&cpage=$matches[3]',
-					'/2014/comment-page-123/'                           => 'index.php?year=$matches[1]&cpage=$matches[2]',
 				),
 				'Pages' => array(
 					'/hello/attachment/world/'                       => 'index.php?attachment=$matches[1]',
