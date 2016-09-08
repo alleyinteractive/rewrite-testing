@@ -351,6 +351,7 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 			$category_base = get_option( 'category_base' ) ? get_option( 'category_base' ) : 'category';
 			$search_base   = $wp_rewrite->search_base;
 			$author_base   = $wp_rewrite->author_base;
+			$structure     = $wp_rewrite->permalink_structure;
 			$has_rest_api  = has_action( 'init', 'rest_api_init' );
 			$has_embeds    = has_action( 'rest_api_init', 'wp_oembed_register_route' );
 
@@ -425,25 +426,6 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					'/2014/12/comment-page-123/'       => 'index.php?year=$matches[1]&monthnum=$matches[2]&cpage=$matches[3]',
 					'/2014/comment-page-123/'          => 'index.php?year=$matches[1]&cpage=$matches[2]',
 				),
-				'Posts' => array(
-					'/2014/1/1/hello/attachment/world/'                 => 'index.php?attachment=$matches[1]',
-					'/2014/2/10/hello/attachment/world/trackback/'      => 'index.php?attachment=$matches[1]&tb=1',
-					'/2014/3/2/hello/attachment/world/feed/rss/'        => 'index.php?attachment=$matches[1]&feed=$matches[2]',
-					'/2014/4/20/hello/attachment/world/rss/'            => 'index.php?attachment=$matches[1]&feed=$matches[2]',
-					'/2014/5/30/hello/attachment/world/comment-page-2/' => 'index.php?attachment=$matches[1]&cpage=$matches[2]',
-					'/2014/1/31/hello/trackback/'                       => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&tb=1',
-					'/2014/2/10/hello/feed/rss/'                        => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&feed=$matches[5]',
-					'/2014/3/20/hello/rss/'                             => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&feed=$matches[5]',
-					'/2014/4/30/hello/page/2/'                          => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&paged=$matches[5]',
-					'/2014/5/31/hello/comment-page-2/'                  => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&cpage=$matches[5]',
-					'/2014/10/5/hello/'                                 => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&page=$matches[5]',
-					'/2014/10/5/hello/2'                                => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&page=$matches[5]',
-					'/2014/6/2/hello/world/'                            => 'index.php?attachment=$matches[1]',
-					'/2014/7/10/hello/world/trackback/'                 => 'index.php?attachment=$matches[1]&tb=1',
-					'/2014/10/20/hello/world/feed/rss/'                 => 'index.php?attachment=$matches[1]&feed=$matches[2]',
-					'/2014/11/30/hello/world/rss/'                      => 'index.php?attachment=$matches[1]&feed=$matches[2]',
-					'/2014/12/31/hello/world/comment-page-2/'           => 'index.php?attachment=$matches[1]&cpage=$matches[2]',
-				),
 				'Pages' => array(
 					'/hello/attachment/world/'                       => 'index.php?attachment=$matches[1]',
 					'/parent/child/attachment/world/'                => 'index.php?attachment=$matches[1]',
@@ -481,12 +463,95 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 
 			if ( $has_embeds ) {
 				$tests['Embeds'] = array(
-					'/2014/10/5/hello/embed/'                  => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&embed=true',
-					'/2014/10/5/hello/attachment/world/embed/' => 'index.php?attachment=$matches[1]&embed=true',
 					'/parent/embed/'                           => 'index.php?pagename=$matches[1]&embed=true',
 					'/parent/attachment/world/embed/'          => 'index.php?attachment=$matches[1]&embed=true',
 					'/parent/child/embed/'                     => 'index.php?pagename=$matches[1]&embed=true',
 				);
+			}
+
+			switch ( $structure ) {
+
+				case '/%year%/%monthnum%/%day%/%postname%/':
+					// Day and name
+					$tests['Posts'] = array(
+						'/2014/1/1/hello/attachment/world/'                 => 'index.php?attachment=$matches[1]',
+						'/2014/2/10/hello/attachment/world/trackback/'      => 'index.php?attachment=$matches[1]&tb=1',
+						'/2014/3/2/hello/attachment/world/feed/rss/'        => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/2014/4/20/hello/attachment/world/rss/'            => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/2014/5/30/hello/attachment/world/comment-page-2/' => 'index.php?attachment=$matches[1]&cpage=$matches[2]',
+						'/2014/1/31/hello/trackback/'                       => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&tb=1',
+						'/2014/2/10/hello/feed/rss/'                        => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&feed=$matches[5]',
+						'/2014/3/20/hello/rss/'                             => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&feed=$matches[5]',
+						'/2014/4/30/hello/page/2/'                          => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&paged=$matches[5]',
+						'/2014/5/31/hello/comment-page-2/'                  => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&cpage=$matches[5]',
+						'/2014/10/5/hello/'                                 => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&page=$matches[5]',
+						'/2014/10/5/hello/2'                                => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&page=$matches[5]',
+						'/2014/6/2/hello/world/'                            => 'index.php?attachment=$matches[1]',
+						'/2014/7/10/hello/world/trackback/'                 => 'index.php?attachment=$matches[1]&tb=1',
+						'/2014/10/20/hello/world/feed/rss/'                 => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/2014/11/30/hello/world/rss/'                      => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/2014/12/31/hello/world/comment-page-2/'           => 'index.php?attachment=$matches[1]&cpage=$matches[2]',
+					);
+					if ( $has_embeds ) {
+						$tests['Embeds']['/2014/10/5/hello/embed/']                  = 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&embed=true';
+						$tests['Embeds']['/2014/10/5/hello/attachment/world/embed/'] = 'index.php?attachment=$matches[1]&embed=true';
+					}
+					break;
+
+				case '/%year%/%monthnum%/%postname%/':
+					// Month and name
+					$tests['Posts'] = array(
+						'/2014/1/hello/attachment/world/'                => 'index.php?attachment=$matches[1]',
+						'/2014/2/hello/attachment/world/trackback/'      => 'index.php?attachment=$matches[1]&tb=1',
+						'/2014/3/hello/attachment/world/feed/rss/'       => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/2014/4/hello/attachment/world/rss/'            => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/2014/5/hello/attachment/world/comment-page-2/' => 'index.php?attachment=$matches[1]&cpage=$matches[2]',
+						'/2014/1/hello/trackback/'                       => 'index.php?year=$matches[1]&monthnum=$matches[2]&name=$matches[3]&tb=1',
+						'/2014/2/hello/feed/rss/'                        => 'index.php?year=$matches[1]&monthnum=$matches[2]&name=$matches[3]&feed=$matches[4]',
+						'/2014/3/hello/rss/'                             => 'index.php?year=$matches[1]&monthnum=$matches[2]&name=$matches[3]&feed=$matches[4]',
+						'/2014/4/hello/page/2/'                          => 'index.php?year=$matches[1]&monthnum=$matches[2]&name=$matches[3]&paged=$matches[4]',
+						'/2014/5/hello/comment-page-2/'                  => 'index.php?year=$matches[1]&monthnum=$matches[2]&name=$matches[3]&cpage=$matches[4]',
+						'/2014/10/hello/'                                => 'index.php?year=$matches[1]&monthnum=$matches[2]&name=$matches[3]&page=$matches[4]',
+						'/2014/10/hello/2'                               => 'index.php?year=$matches[1]&monthnum=$matches[2]&name=$matches[3]&page=$matches[4]',
+						'/2014/6/hello/world/'                           => 'index.php?attachment=$matches[1]',
+						'/2014/7/hello/world/trackback/'                 => 'index.php?attachment=$matches[1]&tb=1',
+						'/2014/10/hello/world/feed/rss/'                 => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/2014/11/hello/world/rss/'                      => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/2014/12/hello/world/comment-page-2/'           => 'index.php?attachment=$matches[1]&cpage=$matches[2]',
+					);
+					if ( $has_embeds ) {
+						$tests['Embeds']['/2014/10/hello/embed/']                  = 'index.php?year=$matches[1]&monthnum=$matches[2]&name=$matches[3]&embed=true';
+						$tests['Embeds']['/2014/10/hello/attachment/world/embed/'] = 'index.php?attachment=$matches[1]&embed=true';
+					}
+					break;
+
+				case '/%postname%/':
+					// Post name
+					$tests['Posts'] = array(
+						'/hello/attachment/world/'                => 'index.php?attachment=$matches[1]',
+						'/hello/attachment/world/trackback/'      => 'index.php?attachment=$matches[1]&tb=1',
+						'/hello/attachment/world/feed/rss/'       => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/hello/attachment/world/rss/'            => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/hello/attachment/world/comment-page-2/' => 'index.php?attachment=$matches[1]&cpage=$matches[2]',
+						'/hello/trackback/'                       => 'index.php?name=$matches[1]&tb=1',
+						'/hello/feed/rss/'                        => 'index.php?name=$matches[1]&feed=$matches[2]',
+						'/hello/rss/'                             => 'index.php?name=$matches[1]&feed=$matches[2]',
+						'/hello/page/2/'                          => 'index.php?name=$matches[1]&paged=$matches[2]',
+						'/hello/comment-page-2/'                  => 'index.php?name=$matches[1]&cpage=$matches[2]',
+						'/hello/'                                 => 'index.php?name=$matches[1]&page=$matches[2]',
+						'/hello/2'                                => 'index.php?name=$matches[1]&page=$matches[2]',
+						'/hello/world/'                           => 'index.php?attachment=$matches[1]',
+						'/hello/world/trackback/'                 => 'index.php?attachment=$matches[1]&tb=1',
+						'/hello/world/feed/rss/'                  => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/hello/world/rss/'                       => 'index.php?attachment=$matches[1]&feed=$matches[2]',
+						'/hello/world/comment-page-2/'            => 'index.php?attachment=$matches[1]&cpage=$matches[2]',
+					);
+					if ( $has_embeds ) {
+						$tests['Embeds']['/hello/embed/']                  = 'index.php?name=$matches[1]&embed=true';
+						$tests['Embeds']['/hello/attachment/world/embed/'] = 'index.php?attachment=$matches[1]&embed=true';
+					}
+					break;
+
 			}
 
 			return apply_filters( 'rewrite_testing_tests', $tests );
