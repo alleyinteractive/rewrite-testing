@@ -351,6 +351,8 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 			$category_base = get_option( 'category_base' ) ? get_option( 'category_base' ) : 'category';
 			$search_base   = $wp_rewrite->search_base;
 			$author_base   = $wp_rewrite->author_base;
+			$has_rest_api  = has_action( 'init', 'rest_api_init' );
+			$has_embeds    = has_action( 'rest_api_init', 'wp_oembed_register_route' );
 
 			// Array of arrays of path => should match
 			$tests = array(
@@ -470,14 +472,14 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 				),
 			);
 
-			if ( has_action( 'init', 'rest_api_init' ) ) {
+			if ( $has_rest_api ) {
 				$tests['REST API'] = array(
 					'/' . rest_get_url_prefix() . '/'            => 'index.php?rest_route=/',
 					'/' . rest_get_url_prefix() . '/v2/foo/bar/' => 'index.php?rest_route=/$matches[1]',
 				);
 			}
 
-			if ( has_action( 'rest_api_init', 'wp_oembed_register_route' ) ) {
+			if ( $has_embeds ) {
 				$tests['Embeds'] = array(
 					'/2014/10/5/hello/embed/'                  => 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&embed=true',
 					'/2014/10/5/hello/attachment/world/embed/' => 'index.php?attachment=$matches[1]&embed=true',
