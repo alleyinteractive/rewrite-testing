@@ -353,7 +353,7 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 			$author_base   = $wp_rewrite->author_base;
 
 			// Array of arrays of path => should match
-			return apply_filters( 'rewrite_testing_tests', array(
+			$tests = array(
 				'Query Test' => array(
 					'/query-test/' => array( 'query' => array( 'page' => '', 'pagename' => 'query-test' ) ),
 				),
@@ -468,7 +468,16 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					'/parent/child/'                                 => 'index.php?pagename=$matches[1]&page=$matches[2]',
 					'/parent/child/2'                                => 'index.php?pagename=$matches[1]&page=$matches[2]',
 				),
-			) );
+			);
+
+			if ( has_action( 'init', 'rest_api_init' ) ) {
+				$tests['REST API'] = array(
+					'/' . rest_get_url_prefix() . '/'            => 'index.php?rest_route=/',
+					'/' . rest_get_url_prefix() . '/v2/foo/bar/' => 'index.php?rest_route=/$matches[1]',
+				);
+			}
+
+			return apply_filters( 'rewrite_testing_tests', $tests );
 		}
 
 
