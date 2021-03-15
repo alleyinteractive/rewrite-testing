@@ -84,7 +84,7 @@ your rules get flushed), and if they fail, the debug bar button will turn red.
 == Contributing ==
 
 This plugin is [maintained in GitHub](https://github.com/alleyinteractive/rewrite-testing).
-If you find a bug, it's best to file an issue there than via the WordPress.org
+If you find a bug, it's best to file an issue there rather than via the WordPress.org
 support forums.
 
 
