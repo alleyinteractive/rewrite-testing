@@ -1,0 +1,6 @@
+{
+    "name": "alleyinteractive/rewrite-testing",
+    "description": "A WordPress plugin to unit test your rewrite rules",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later"
+}
