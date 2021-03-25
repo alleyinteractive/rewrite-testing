@@ -354,6 +354,7 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 			$structure     = $wp_rewrite->permalink_structure;
 			$has_rest_api  = has_action( 'init', 'rest_api_init' );
 			$has_embeds    = has_action( 'rest_api_init', 'wp_oembed_register_route' );
+			$has_sitemaps  = has_action( 'init', 'wp_sitemaps_get_server' );
 
 			// Array of arrays of path => should match
 			$tests = array(
@@ -466,6 +467,16 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					'/parent/embed/'                           => 'index.php?pagename=$matches[1]&embed=true',
 					'/parent/attachment/world/embed/'          => 'index.php?attachment=$matches[1]&embed=true',
 					'/parent/child/embed/'                     => 'index.php?pagename=$matches[1]&embed=true',
+				);
+			}
+
+			if ( $has_sitemaps ) {
+				$tests['XML Sitemaps'] = array(
+					'/wp-sitemap.xml'           => 'index.php?sitemap=index',
+					'/wp-sitemap.xsl'           => 'index.php?sitemap-stylesheet=sitemap',
+					'/wp-sitemap-index.xsl'     => 'index.php?sitemap-stylesheet=index',
+					'/wp-sitemap-foo-1.xml'     => 'index.php?sitemap=$matches[1]&paged=$matches[2]',
+					'/wp-sitemap-foo-bar-2.xml' => 'index.php?sitemap=$matches[1]&sitemap-subtype=$matches[2]&paged=$matches[3]',
 				);
 			}
 
