@@ -384,6 +384,7 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					'/type/hello/'           => 'index.php?post_format=$matches[1]',
 				),
 				'Misc' => array(
+					'/favicon.ico'       => 'index.php?favicon=1',
 					'/robots.txt'        => 'index.php?robots=1',
 					'/wp-rss.php'        => 'index.php?feed=old',
 					'/hello/wp-atom.php' => 'index.php?feed=old',
@@ -454,6 +455,13 @@ if ( ! class_exists( 'Rewrite_Testing' ) ) :
 					'/parent/child/2'                                => 'index.php?pagename=$matches[1]&page=$matches[2]',
 				),
 			);
+
+			if ( is_multisite() && is_main_site() ) {
+				$tests['Multisite'] = array(
+					'/wp-signup.php'   => 'index.php?signup=true',
+					'/wp-activate.php' => 'index.php?activate=true',
+				);
+			}
 
 			if ( $has_rest_api ) {
 				$tests['REST API'] = array(
