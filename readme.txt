@@ -112,6 +112,12 @@ rewrites; these are just to serve as a demonstration.
 
 == Changelog ==
 
+= 1.1.0 =
+
+* Improves compatibility with PHP 8
+* Fixes, improves, and adds to many of the default tests
+* Confirms compatibility up to WordPress 6.2
+
 = 1.0.0 =
 
 * Adds a `wp rewrite test` command for WP-CLI
