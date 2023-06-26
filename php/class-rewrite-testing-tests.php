@@ -94,12 +94,18 @@ if ( ! class_exists( 'Rewrite_Testing_Tests' ) ) :
 		public function extended_test( $request ) {
 			global $wp_rewrite, $wp;
 
-			if ( is_wp_error( $this->basic_rewrite_rules ) ) {
-				return $this->basic_rewrite_rules;
-			}
-
 			$query_vars = array();
 			$post_type_query_vars = array();
+
+			if ( false === $this->basic_rewrite_rules ) {
+				$this->basic_rewrite_rules = $this->get_rules();
+			}
+
+			if ( is_wp_error( $this->basic_rewrite_rules ) ) {
+				return $this->basic_rewrite_rules;
+			} elseif ( false === $this->basic_rewrite_rules ) {
+				return new WP_Error( 'rt_empty_rules', __( 'The rewrite rules look to be missing. Try flushing or check your permalink settings.', 'rewrite-testing' ) );
+			}
 
 			if ( false === $this->extended_rewrite_rules ) {
 				// Fetch the rewrite rules.
