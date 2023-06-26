@@ -2,10 +2,10 @@
 Contributors: mboynes, johnbillion, alleyinteractive
 Tags: permalinks, rewrite rules, tests, testing
 Requires at least: 3.9
-Tested up to: 4.3
-Stable tag: 1.0.0
+Tested up to: 6.2
+Stable tag: 1.1.0
 
-Unit test your rewrite rules from the WordPress Admin or Debug Bar.
+Unit test your rewrite rules from the WordPress admin, from Query Monitor, or from Debug Bar.
 
 == Description ==
 
